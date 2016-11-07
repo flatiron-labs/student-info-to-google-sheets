@@ -2,16 +2,4 @@
 
 require_relative '../config/environment'
 
-puts "Enter a batch ID"
-batch_id = gets.strip
-adapter = Adapters::Learn.new
-students = adapter.fetch_batch_students(batch_id)
-puts "Found data for #{students.length} students. Type 'Y' to download a CSV"
-answer = gets.strip
-if answer.downcase == "y"
-  StudentCsvParser.new(students).to_csv
-else
-  sheets_adapter = Adapters::GoogleSheets.new('Web-1116 Student Tracker')
-  sheet = sheets_adapter.create_worksheet("Week of #{Date.today.strftime()}")
-  StudentCsvParser.new(students).to_google_sheet(sheet)
-end
+Application.new.call
