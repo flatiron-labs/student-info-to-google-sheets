@@ -1,3 +1,5 @@
+require 'pry'
+
 class StudentCsvParser
 
   attr_reader :students
@@ -22,4 +24,15 @@ class StudentCsvParser
     sheet.save
   end
 
+  def update_google_sheet(adapter, worksheet, week)
+    students.each do |student|
+      row_index = adapter.get_row_index(worksheet, student["github_username"])
+      if row_index
+        x_index = row_index + 1
+        y_index = adapter.get_col_index(worksheet, week) + 1
+        worksheet[x_index, y_index] = student["completed_lessons_count"]
+        worksheet.save
+      end
+    end
+  end
 end

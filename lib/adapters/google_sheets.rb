@@ -1,3 +1,5 @@
+require 'pry'
+
 module Adapters
   class GoogleSheets
 
@@ -10,6 +12,18 @@ module Adapters
 
     def create_worksheet(title)
       spreadsheet.add_worksheet(title)
+    end
+
+    def get_worksheet(title)
+      spreadsheet.worksheets.find{ |ws| ws.title == title }
+    end
+
+    def get_row_index(worksheet, username)
+      worksheet.rows.index{ |row| row.include?(username)}
+    end
+
+    def get_col_index(worksheet, week)
+      worksheet.rows[0].index(week)
     end
   end
 end
