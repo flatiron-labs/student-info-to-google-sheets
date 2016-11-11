@@ -26,11 +26,12 @@ class StudentCsvParser
 
   def update_google_sheet(adapter, worksheet, week)
     students.each do |student|
+      percentage_complete = (student["completed_lessons_count"].to_f/student["total_lessons_count"]).round(2)
       row_index = adapter.get_row_index(worksheet, student["github_username"])
       if row_index
         x_index = row_index + 1
         y_index = adapter.get_col_index(worksheet, week) + 1
-        worksheet[x_index, y_index] = student["completed_lessons_count"]
+        worksheet[x_index, y_index] = percentage_complete
         worksheet.save
       end
     end
